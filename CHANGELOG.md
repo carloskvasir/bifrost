@@ -43,24 +43,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - License file (Mozilla Public License 2.0)
 - Project structure with Gemfile and dependencies
 
----
-
-## Types of changes
-- `Added` for new features
-- `Changed` for changes in existing functionality
-- `Deprecated` for soon-to-be removed features
-- `Removed` for now removed features
-- `Fixed` for any bug fixes
-- `Security` in case of vulnerabilities
-
-## [1.0.0] - 2025-09-13
-
-### Added
-- Initial project setup with basic Sinatra server
-- Basic `/status` endpoint
-- Initial documentation in README.md
-- License file (Mozilla Public License 2.0)
-
 ### Changed
 - Project structure optimized for learning DevOps practices
 

@@ -20,7 +20,7 @@ Resources:
       FunctionName: bifronst-bridge
       Description: Magical bridge server connecting worlds through HTTP
       CodeUri: .
-      Handler: lambda_handler.lambda_handler
+      Handler: server.lambda_handler
       Events:
         ApiGatewayEvent:
           Type: ApiGatewayV2::Api

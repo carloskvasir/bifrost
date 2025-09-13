@@ -7,7 +7,6 @@
 Once upon a time, there was a magical bridge called **Bifronst**. It was not an ordinary bridge: it connected different worlds, helping travelers cross from one side to the other safely and quickly. Just like in mythology, where the Bifrost bridge connects gods and humans, our **Bifronst** app connects systems, people, and ideas, making communication easier and more efficient.
 
 Whenever someone needed to send an important message, they just used Bifronst. It took care of everything: received the request, prepared the message, and delivered it to the other side, always with a touch of magic and security. And so, everyone lived happily, knowing their messages would always reach the right destination.
---
 
 ## About the Project
 
@@ -36,4 +35,4 @@ bundle exec ruby server.rb    # Start local server
 ### AWS Lambda Deployment
 ```zsh
 sam deploy --template-file template.yaml --stack-name bifronst-stack --capabilities CAPABILITY_IAM
--```
+```

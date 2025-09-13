@@ -6,6 +6,7 @@ source 'https://rubygems.org'
 gem 'sinatra', '~> 3.0'
 gem 'rack', '~> 2.2'
 gem 'json', '~> 2.6'
+gem 'webrick', '~> 1.8'  # Web server for development
 
 # AWS Lambda Runtime Interface Client (for Ruby Lambda functions)
 gem 'aws-sdk-lambda', '~> 1.80'
@@ -15,7 +16,6 @@ gem 'oj', '~> 3.14'  # Fast JSON parsing/generation
 
 # Development dependencies
 group :development do
-  gem 'rerun', '~> 0.14'  # Auto-restart server on file changes
   gem 'rubocop', '~> 1.57'  # Code style checker
   gem 'solargraph', '~> 0.49'  # Language server for Ruby
 end
