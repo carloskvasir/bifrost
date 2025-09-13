@@ -1,0 +1,54 @@
+# Ruby
+*.gem
+.bundle
+.config
+coverage
+InstalledFiles
+lib/bundler/man
+pkg
+rdoc
+spec/reports
+test/tmp
+test/version_tmp
+tmp
+
+# YARD artifacts
+.yardoc
+_yardoc
+doc/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Environment variables
+.env
+.env.local
+.env.production
+
+# AWS Lambda
+.sam/
+build/
+*.zip
+.aws-sam/
+
+# Deployment artifacts
+vendor/
+
+# Temporary files
+*.tmp
+*.bak
+.cache/
+
+# Local development
+.rerun

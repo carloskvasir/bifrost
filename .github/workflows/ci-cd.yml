@@ -1,0 +1,76 @@
+name: Bifronst CI/CD
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.2.2
+        bundler-cache: true
+
+    - name: Run tests
+      run: |
+        bundle exec rspec
+
+    - name: Run RuboCop
+      run: |
+        bundle exec rubocop
+
+  build-and-deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.2.2
+
+    - name: Build Lambda package
+      run: |
+        mkdir -p build
+        bundle install --deployment --path vendor/bundle
+        cp -r * build/
+        cd build && zip -r ../bifronst-lambda.zip . -x "*.git*" "*build*" "*.DS_Store"
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+
+    - name: Deploy to AWS Lambda
+      run: |
+        sam deploy --template-file template.yaml --stack-name bifronst-stack --capabilities CAPABILITY_IAM --no-confirm-changeset
+
+  docker-build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Build Docker image
+      run: |
+        docker build -t bifronst:${{ github.sha }} .
+
+    - name: Test Docker image
+      run: |
+        docker run -d --name test-container -p 3000:3000 bifronst:${{ github.sha }}
+        sleep 10
+        curl -f http://localhost:3000/status
+        docker stop test-container

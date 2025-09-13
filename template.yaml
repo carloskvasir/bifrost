@@ -1,0 +1,68 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Bifronst - A Magical Bridge Server (AWS Lambda)
+
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 512
+    Runtime: ruby3.2
+    Architectures:
+      - x86_64
+    Environment:
+      Variables:
+        RACK_ENV: production
+
+Resources:
+  BifronstFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: bifronst-bridge
+      Description: Magical bridge server connecting worlds through HTTP
+      CodeUri: .
+      Handler: lambda_handler.lambda_handler
+      Events:
+        ApiGatewayEvent:
+          Type: ApiGatewayV2::Api
+          Properties:
+            Name: bifronst-api
+            ProtocolType: HTTP
+            CorsConfiguration:
+              AllowCredentials: false
+              AllowHeaders:
+                - content-type
+                - x-amz-date
+                - authorization
+                - x-api-key
+                - x-amz-security-token
+              AllowMethods:
+                - GET
+                - POST
+                - PUT
+                - DELETE
+                - OPTIONS
+              AllowOrigins:
+                - '*'
+            RouteSettings:
+              $default:
+                ThrottlingBurstLimit: 100
+                ThrottlingRateLimit: 50
+
+  BifronstLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: /aws/lambda/bifronst-bridge
+      RetentionInDays: 30
+
+Outputs:
+  BifronstApiUrl:
+    Description: URL of the Bifronst API Gateway
+    Value: !Sub 'https://${ApiGatewayApi}.execute-api.${AWS::Region}.amazonaws.com'
+    Export:
+      Name: BifronstApiUrl
+
+  BifronstFunctionArn:
+    Description: ARN of the Bifronst Lambda function
+    Value: !GetAtt BifronstFunction.Arn
+    Export:
+      Name: BifronstFunctionArn
